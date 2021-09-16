@@ -1,3 +1,4 @@
+import { User } from '@firebase/auth'
 import { Dispatch, ReactChild, ReactChildren } from 'react'
 
 export interface ITodo {
@@ -6,12 +7,15 @@ export interface ITodo {
   title: string
   completed: boolean
 }
-
 export interface IContextValue {
   todos: Array<ITodo>
   updateTodo?: Dispatch<React.SetStateAction<ITodo[]>>
 }
 
-export interface ContextProps {
+export interface IAuthContextValue {
+  user: User | null
+}
+
+export interface IContextProps {
   children: ReactChild | ReactChild[] | ReactChildren | ReactChildren[]
 }

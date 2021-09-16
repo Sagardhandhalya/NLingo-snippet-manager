@@ -1,21 +1,43 @@
 import './Header.scss'
-import monster from '../../assets/png_test.png'
 import { Link } from 'react-router-dom'
+import Avatar from '../Avatar/Avatar'
+import { auth } from '../../config/firebaseConfig'
+import { signOut } from '@firebase/auth'
+import { useAuth } from '../../context/AuthContext'
+import Button from '../Button/Button'
 
 const Header = () => {
+  const { user } = useAuth()
+  const logout = () => {
+    signOut(auth)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+  }
+
   return (
     <nav className="navbar__container">
-      <div className="navabar_left">
-        <img src={monster} alt="logo" width={50} height={50} />
-      </div>
-
-      <div className="navabar__middle"></div>
+      <Link to="/">
+        <div className="navabar_left">
+          <h2>
+            <i>NLingo</i>
+          </h2>
+          <small>
+            <i>snippetes Manager</i>
+          </small>
+        </div>
+      </Link>
 
       <div className="navabar__right">
-        <ul>
-          <Link to="/">Home</Link>
-          <Link to="/demo">Contact</Link>
-        </ul>
+        <Link to="/">Home</Link>
+        <Link to="/create">Create</Link>
+        {user ? (
+          <>
+            <Button text="Logout" onClick={() => logout()}></Button>
+            <Avatar imageUrl={user.photoURL as string} />
+          </>
+        ) : (
+          <div />
+        )}
       </div>
     </nav>
   )

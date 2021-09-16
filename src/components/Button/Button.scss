@@ -1,8 +1,8 @@
-@import "./../../theme/color";
+@use "./../../theme/color" as c;
 @import "./../../theme/size";
 
 .primary_btn {
-  background-color: $primary;
+  background-color: c.$bg-1;
   color: white;
   padding: $md;
   border-radius: 10px;
