@@ -1,15 +1,18 @@
 import { User } from '@firebase/auth'
 import { Dispatch, ReactChild, ReactChildren } from 'react'
 
-export interface ITodo {
-  userId: number
-  id: number
+export interface Snippet {
   title: string
-  completed: boolean
+  desc: string
+  code: string
+  language: string
 }
+
 export interface IContextValue {
-  todos: Array<ITodo>
-  updateTodo?: Dispatch<React.SetStateAction<ITodo[]>>
+  snippetGroup: Array<Record<string, Snippet | string>>
+  updateSnippetGroup?: Dispatch<
+    React.SetStateAction<Record<string, string | Snippet>[]>
+  >
 }
 
 export interface IAuthContextValue {

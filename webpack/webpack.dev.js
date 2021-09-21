@@ -6,6 +6,7 @@ module.exports = {
     open: true,
     hot: true,
     port: 4000,
+    historyApiFallback: true,
   },
   plugins: [new reactRefreshPlugin()],
 }

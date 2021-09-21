@@ -1,14 +1,25 @@
 import './Login.scss'
 import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../../config/firebaseConfig'
+import { auth, db, provider } from '../../config/firebaseConfig'
 import { useAuth } from '../../context/AuthContext'
 import { Redirect } from 'react-router'
+import { doc, setDoc } from 'firebase/firestore'
 
 const Login = () => {
   const handleSignIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result.user)
+        const { displayName, photoURL, uid, email } = result.user
+        setDoc(
+          doc(db, 'userData', uid),
+          { displayName, photoURL, uid, email },
+          { merge: true }
+        )
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => console.log(err))
       })
       .catch((error) => {
         // Handle Errors here.

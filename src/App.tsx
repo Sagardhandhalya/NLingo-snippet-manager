@@ -5,15 +5,20 @@ import CreateSnippet from './components/CreateSnippet/CreateSnippet'
 import './App.scss'
 import Login from './pages/Login/Login'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import SnippetGroup from './components/SnippetGroup/SnippetGroup'
 
 const App = () => {
   return (
     <Router>
+      <Header />
       <div className="App">
-        <Header />
         <Switch>
           <Route path="/login" component={Login} />
           <PrivateRoute path="/create" component={CreateSnippet}></PrivateRoute>
+          <PrivateRoute
+            path="/collection/:id"
+            component={SnippetGroup}
+          ></PrivateRoute>
           <PrivateRoute path="/" exact component={Home}></PrivateRoute>
         </Switch>
       </div>

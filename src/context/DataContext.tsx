@@ -1,30 +1,35 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { makeRequest } from '../services/Fetch.service'
-import { IContextProps, IContextValue, ITodo } from './Types'
+import { IContextProps, IContextValue, Snippet } from './Types'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../config/firebaseConfig'
+import { useAuth } from './../context/AuthContext'
 const initialState = {
-  todos: [
-    {
-      userId: 1,
-      id: 2,
-      title: 'quis ut nam facilis et officia qui',
-      completed: false,
-    },
-  ],
+  snippetGroup: [],
 }
 const dataContext = createContext<IContextValue>(initialState)
 const DataContext = ({ children }: IContextProps) => {
-  const [todos, setTodos] = useState<Array<ITodo>>(initialState.todos)
+  const [snippetGroup, setSnippetGroup] = useState<
+    Array<Record<string, Snippet | string>>
+  >(initialState.snippetGroup)
+  const { user } = useAuth()
+  console.log(`userData/${user?.uid}/groups`)
 
   useEffect(() => {
-    makeRequest({
-      method: 'GET',
-      url: '/todos?_start=10&_limit=5',
-    }).then((res) => {
-      setTodos(res)
-    })
-  }, [])
+    if (user?.uid) {
+      const unsub = onSnapshot(
+        collection(db, `userData/${user?.uid}/groups`),
+        (snapshot) => {
+          setSnippetGroup(snapshot.docs.map((e) => e.data()))
+          console.log(snapshot.docs.map((e) => e.data()))
+        }
+      )
+      return unsub
+    }
+  }, [user?.uid])
   return (
-    <dataContext.Provider value={{ todos: todos, updateTodo: setTodos }}>
+    <dataContext.Provider
+      value={{ snippetGroup, updateSnippetGroup: setSnippetGroup }}
+    >
       {children}
     </dataContext.Provider>
   )

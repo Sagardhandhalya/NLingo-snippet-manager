@@ -1,5 +1,6 @@
 export interface IHoverCardProps {
-  link: string
-  descreption: string
   title: string
+  desc: string
+  code: string
+  language: string
 }
