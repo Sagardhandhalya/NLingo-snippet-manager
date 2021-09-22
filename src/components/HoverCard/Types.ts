@@ -3,4 +3,5 @@ export interface IHoverCardProps {
   desc: string
   code: string
   language: string
+  docpath: string
 }

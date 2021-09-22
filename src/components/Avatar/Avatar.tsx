@@ -1,4 +1,5 @@
 import { FC } from 'react'
+
 import { IAvatarProps } from './Types'
 import './Avatar.scss'
 const Avatar: FC<IAvatarProps> = ({ imageUrl, style }) => {

@@ -1,10 +1,11 @@
 import './Header.scss'
-import { Link } from 'react-router-dom'
-import Avatar from '../Avatar/Avatar'
-import { auth } from '../../config/firebaseConfig'
 import { signOut } from '@firebase/auth'
+import { Link } from 'react-router-dom'
+
+import { auth } from '../../config/firebaseConfig'
 import { useAuth } from '../../context/AuthContext'
-import Button from '../Button/Button'
+import Avatar from '../Avatar/Avatar'
+import { Button } from '@mui/material'
 
 const Header = () => {
   const { user } = useAuth()
@@ -36,9 +37,11 @@ const Header = () => {
           <>
             <Avatar
               imageUrl={user.photoURL as string}
-              style={{ marginRight: '40px' }}
+              style={{ marginRight: '20px' }}
             />
-            <Button text="Logout" onClick={() => logout()}></Button>
+            <Button variant="contained" onClick={() => logout()}>
+              Logout
+            </Button>
           </>
         ) : (
           <div />

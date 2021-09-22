@@ -1,7 +1,10 @@
 import { useParams } from 'react-router'
+
 import { useDataContext } from '../../context/DataContext'
 import HoverCard from '../HoverCard/HoverCard'
+import TitleBar from './../TitleBar/TitleBar'
 import './SnippetGroup.scss'
+
 const SnippetGroup = () => {
   const { id } = useParams<{ id: string }>()
   const { snippetGroup } = useDataContext()
@@ -9,8 +12,8 @@ const SnippetGroup = () => {
 
   return (
     <div className="container">
-      <h3>{snippetGroup[parseInt(id)].name}</h3>
-      <hr />
+      <TitleBar text={snippetGroup[parseInt(id)].name as string} />
+
       <div className="group__container">
         {snippets.map((snippet, i) => {
           if (typeof snippet !== 'string') {
@@ -21,6 +24,7 @@ const SnippetGroup = () => {
                 desc={snippet?.desc}
                 language={snippet.language}
                 code={snippet.code}
+                docpath={snippetGroup[parseInt(id)].name as string}
               />
             )
           }

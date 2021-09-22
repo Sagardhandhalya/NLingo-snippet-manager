@@ -1,18 +1,44 @@
-import { IHoverCardProps } from './Types'
 import './HoverCard.scss'
-import { FC } from 'react'
-import Highlight from 'react-highlight'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardActions from '@mui/material/CardActions'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import IconButton from '@mui/material/IconButton/IconButton'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-const HoverCard: FC<IHoverCardProps> = ({ code, language }) => {
-  console.log(code)
+import { FC, useState } from 'react'
 
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardHeader from '@mui/material/CardHeader'
+import DialogContent from '@mui/material/DialogContent'
+import IconButton from '@mui/material/IconButton/IconButton'
+import { doc, updateDoc, deleteField } from 'firebase/firestore'
+import Highlight from 'react-highlight'
+import { db } from '../../config/firebaseConfig'
+import { useAuth } from '../../context/AuthContext'
+import Modal from './../Modal/Modal'
+import { IHoverCardProps } from './Types'
+import { useHistory } from 'react-router'
+
+const HoverCard: FC<IHoverCardProps> = ({ code, language, docpath }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const history = useHistory()
+  const { user } = useAuth()
+  const copyCode = () => {
+    navigator.clipboard
+      .writeText(code)
+      .then((w) => console.log(w))
+      .catch((err) => console.log(err))
+  }
+
+  const dropSnippet = () => {
+    const docref = doc(db, `userData/${user?.uid}/groups`, docpath)
+    console.log(docref.path)
+
+    const data: any = {}
+    data[language] = deleteField()
+    updateDoc(docref, data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+  }
   return (
     <Card
       sx={{
@@ -27,20 +53,33 @@ const HoverCard: FC<IHoverCardProps> = ({ code, language }) => {
         <Highlight className={language}>{code}</Highlight>
       </div>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() =>
+            history.push(`/create?colle=${docpath}&lang=${language}`)
+          }
+        >
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="share" onClick={copyCode}>
           <ContentCopyIcon />
         </IconButton>
-        <IconButton aria-label="delete icon">
+        <IconButton aria-label="delete icon" onClick={dropSnippet}>
           <DeleteIcon />
         </IconButton>
 
-        <IconButton aria-label="open in popup icon">
+        <IconButton
+          aria-label="open in popup icon"
+          onClick={() => setIsModalOpen(true)}
+        >
           <VisibilityIcon />
         </IconButton>
       </CardActions>
+      <Modal open={isModalOpen} handleClose={() => setIsModalOpen(false)}>
+        <DialogContent>
+          <Highlight className={language}>{code}</Highlight>
+        </DialogContent>
+      </Modal>
     </Card>
   )
 }

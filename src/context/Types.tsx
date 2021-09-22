@@ -1,5 +1,6 @@
-import { User } from '@firebase/auth'
 import { Dispatch, ReactChild, ReactChildren } from 'react'
+
+import { User } from '@firebase/auth'
 
 export interface Snippet {
   title: string

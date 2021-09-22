@@ -1,4 +1,5 @@
 import { Redirect, Route, RouteProps } from 'react-router'
+
 import { useAuth } from '../../context/AuthContext'
 
 export type ProtectedRouteProps = RouteProps

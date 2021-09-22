@@ -1,9 +1,10 @@
 import './Login.scss'
 import { signInWithPopup } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { Redirect } from 'react-router'
+
 import { auth, db, provider } from '../../config/firebaseConfig'
 import { useAuth } from '../../context/AuthContext'
-import { Redirect } from 'react-router'
-import { doc, setDoc } from 'firebase/firestore'
 
 const Login = () => {
   const handleSignIn = () => {

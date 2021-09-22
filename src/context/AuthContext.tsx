@@ -1,5 +1,7 @@
-import { NextOrObserver, User } from '@firebase/auth'
 import { createContext, useContext, useState } from 'react'
+
+import { NextOrObserver, User } from '@firebase/auth'
+
 import { auth } from '../config/firebaseConfig'
 import { IAuthContextValue, IContextProps } from './Types'
 
