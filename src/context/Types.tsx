@@ -11,6 +11,7 @@ export interface Snippet {
 
 export interface IContextValue {
   snippetGroup: Array<Record<string, Snippet | string>>
+  sharedGroup: Array<Record<string, Snippet | string>>
   updateSnippetGroup?: Dispatch<
     React.SetStateAction<Record<string, string | Snippet>[]>
   >

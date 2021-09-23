@@ -13,8 +13,9 @@ import { useDataContext } from '../../context/DataContext'
 import './Home.scss'
 
 const Home = () => {
-  const { snippetGroup } = useDataContext()
+  const { snippetGroup, sharedGroup } = useDataContext()
   const [collectionVisible, setCollectionVisible] = useState(true)
+  const [sharedCollectionVisible, setSharedCCollectionVisible] = useState(true)
 
   return (
     <div className="container">
@@ -44,6 +45,69 @@ const Home = () => {
       <div className="group__container">
         {collectionVisible ? (
           snippetGroup.map((snippets, i) => {
+            const path = `/collection/${i}`
+            return (
+              <Card
+                sx={{
+                  minWidth: 200,
+                  minHeight: 200,
+                  m: 3,
+                  cursor: 'pointer',
+                }}
+                key={i}
+              >
+                <Link to={() => path}>
+                  <CardHeader subheader={snippets.name} />
+                  <CardMedia
+                    style={{ height: 100, width: 100, margin: '0px auto' }}
+                    component="img"
+                    image="https://icon-library.com/images/folder-icon-png/folder-icon-png-0.jpg"
+                    alt="Paella dish"
+                  />
+                </Link>
+                <CardActions disableSpacing>
+                  <IconButton
+                    aria-label="share"
+                    onClick={() => console.log('hi')}
+                  >
+                    <PersonAddIcon />
+                  </IconButton>
+                </CardActions>
+              </Card>
+            )
+          })
+        ) : (
+          <span></span>
+        )}
+      </div>
+
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Stack direction="row" spacing={2} alignItems="center">
+          <IconButton>
+            <CollectionsIcon />
+          </IconButton>
+          <Typography variant="h6" gutterBottom component="div">
+            Shared With You.
+          </Typography>
+        </Stack>
+        <IconButton onClick={() => setSharedCCollectionVisible((pre) => !pre)}>
+          {sharedCollectionVisible ? (
+            <KeyboardArrowDownIcon />
+          ) : (
+            <KeyboardArrowUpIcon />
+          )}
+        </IconButton>
+      </Stack>
+      <hr />
+
+      <div className="group__container">
+        {collectionVisible ? (
+          sharedGroup.map((snippets, i) => {
             const path = `/collection/${i}`
             return (
               <Card

@@ -48,33 +48,40 @@ const HoverCard: FC<IHoverCardProps> = ({ code, language, docpath }) => {
         overflow: 'scroll',
       }}
     >
-      <CardHeader sx={{ m: 0, p: 1 }} subheader={language} />
+      <CardHeader
+        sx={{ m: 0, p: 1 }}
+        subheader={language}
+        action={
+          <CardActions disableSpacing>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() =>
+                history.push(`/create?colle=${docpath}&lang=${language}`)
+              }
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton aria-label="share" onClick={copyCode}>
+              <ContentCopyIcon />
+            </IconButton>
+            <IconButton aria-label="delete icon" onClick={dropSnippet}>
+              <DeleteIcon />
+            </IconButton>
+
+            <IconButton
+              aria-label="open in popup icon"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <VisibilityIcon />
+            </IconButton>
+          </CardActions>
+        }
+      />
+
       <div style={{ borderRadius: '10px' }}>
         <Highlight className={language}>{code}</Highlight>
       </div>
-      <CardActions disableSpacing>
-        <IconButton
-          aria-label="add to favorites"
-          onClick={() =>
-            history.push(`/create?colle=${docpath}&lang=${language}`)
-          }
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton aria-label="share" onClick={copyCode}>
-          <ContentCopyIcon />
-        </IconButton>
-        <IconButton aria-label="delete icon" onClick={dropSnippet}>
-          <DeleteIcon />
-        </IconButton>
 
-        <IconButton
-          aria-label="open in popup icon"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <VisibilityIcon />
-        </IconButton>
-      </CardActions>
       <Modal open={isModalOpen} handleClose={() => setIsModalOpen(false)}>
         <DialogContent>
           <Highlight className={language}>{code}</Highlight>

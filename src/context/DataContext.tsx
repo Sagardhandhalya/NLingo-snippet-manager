@@ -7,12 +7,20 @@ import { useAuth } from './../context/AuthContext'
 import { IContextProps, IContextValue, Snippet } from './Types'
 const initialState = {
   snippetGroup: [],
+  sharedGroup: [],
 }
 const dataContext = createContext<IContextValue>(initialState)
 const DataContext = ({ children }: IContextProps) => {
   const [snippetGroup, setSnippetGroup] = useState<
     Array<Record<string, Snippet | string>>
   >(initialState.snippetGroup)
+
+  const [sharedGroup, setSharedGroup] = useState<
+    Array<Record<string, Snippet | string>>
+  >(initialState.snippetGroup)
+
+  console.log(setSharedGroup)
+
   const { user } = useAuth()
   console.log(`userData/${user?.uid}/groups`)
 
@@ -30,7 +38,7 @@ const DataContext = ({ children }: IContextProps) => {
   }, [user?.uid])
   return (
     <dataContext.Provider
-      value={{ snippetGroup, updateSnippetGroup: setSnippetGroup }}
+      value={{ snippetGroup, updateSnippetGroup: setSnippetGroup, sharedGroup }}
     >
       {children}
     </dataContext.Provider>

@@ -24,9 +24,6 @@ const Header = () => {
           <h2>
             <i>NLingo</i>
           </h2>
-          <small>
-            <i>snippetes Manager</i>
-          </small>
         </div>
       </Link>
 
