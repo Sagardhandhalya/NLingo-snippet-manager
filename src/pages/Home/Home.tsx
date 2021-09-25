@@ -9,14 +9,22 @@ import Typography from '@mui/material/Typography'
 import { Link } from 'react-router-dom'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { useDataContext } from '../../context/DataContext'
-
+import DeleteIcon from '@mui/icons-material/Delete'
+import { doc, deleteDoc } from 'firebase/firestore'
 import './Home.scss'
-
+import { useAuth } from '../../context/AuthContext'
+import { db } from '../../config/firebaseConfig'
+import folder from './../../assets/Folder.svg'
 const Home = () => {
+  const { user } = useAuth()
   const { snippetGroup, sharedGroup } = useDataContext()
   const [collectionVisible, setCollectionVisible] = useState(true)
   const [sharedCollectionVisible, setSharedCCollectionVisible] = useState(true)
-
+  const deleteCollection = (name: string) => {
+    deleteDoc(doc(db, `userData/${user?.uid}/groups`, name)).then((res) =>
+      console.log(res)
+    )
+  }
   return (
     <div className="container">
       <Stack
@@ -59,9 +67,9 @@ const Home = () => {
                 <Link to={() => path}>
                   <CardHeader subheader={snippets.name} />
                   <CardMedia
-                    style={{ height: 100, width: 100, margin: '0px auto' }}
+                    style={{ margin: '0px auto', padding: '30px' }}
                     component="img"
-                    image="https://icon-library.com/images/folder-icon-png/folder-icon-png-0.jpg"
+                    image={folder}
                     alt="Paella dish"
                   />
                 </Link>
@@ -71,6 +79,12 @@ const Home = () => {
                     onClick={() => console.log('hi')}
                   >
                     <PersonAddIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="share"
+                    onClick={() => deleteCollection(snippets.name as string)}
+                  >
+                    <DeleteIcon />
                   </IconButton>
                 </CardActions>
               </Card>
