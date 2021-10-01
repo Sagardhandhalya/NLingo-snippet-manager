@@ -7,7 +7,7 @@ import SnippetGroup from './components/SnippetGroup/SnippetGroup'
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import './App.scss'
-
+import './../node_modules/bulma/bulma.sass'
 const App = () => {
   return (
     <Router>
